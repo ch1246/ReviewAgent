@@ -2,6 +2,9 @@
 
 import sys
 import subprocess
+import io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 from pathlib import Path
 
 # 导入工具
