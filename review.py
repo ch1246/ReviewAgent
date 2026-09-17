@@ -42,6 +42,13 @@ def get_diff() -> str:
     if result.stdout:
         return result.stdout
 
+    # 对比远程分支（pre-push 场景）
+    result = subprocess.run(
+        "git diff @{u}", shell=True, capture_output=True, text=True, timeout=10
+    )
+    if result.stdout:
+        return result.stdout
+
     # 否则看工作区
     result = subprocess.run(
         "git diff HEAD", shell=True, capture_output=True, text=True, timeout=10
