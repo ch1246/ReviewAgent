@@ -24,7 +24,7 @@ def get_project_name() -> str:
     try:
         result = subprocess.run(
             "git rev-parse --show-toplevel",
-            shell=True, capture_output=True, text=True, timeout=5
+            shell=True, capture_output=True, text=True, timeout=5, encoding="utf-8"
         )
         if result.returncode == 0:
             return Path(result.stdout.strip()).name
@@ -37,21 +37,21 @@ def get_diff() -> str:
     """获取待审查的 diff。"""
     # 优先看暂存区（有 add 的话）
     result = subprocess.run(
-        "git diff --cached", shell=True, capture_output=True, text=True, timeout=10
+        "git diff --cached", shell=True, capture_output=True, text=True, timeout=10, encoding="utf-8"
     )
     if result.stdout:
         return result.stdout
 
     # 对比远程分支（pre-push 场景）
     result = subprocess.run(
-        "git diff @{u}", shell=True, capture_output=True, text=True, timeout=10
+        "git diff @{u}", shell=True, capture_output=True, text=True, timeout=10, encoding="utf-8"
     )
     if result.stdout:
         return result.stdout
 
     # 否则看工作区
     result = subprocess.run(
-        "git diff HEAD", shell=True, capture_output=True, text=True, timeout=10
+        "git diff HEAD", shell=True, capture_output=True, text=True, timeout=10, encoding="utf-8"
     )
     return result.stdout or ""
 
@@ -61,7 +61,7 @@ def get_project_path() -> str:
     try:
         result = subprocess.run(
             "git rev-parse --show-toplevel",
-            shell=True, capture_output=True, text=True, timeout=5
+            shell=True, capture_output=True, text=True, timeout=5, encoding="utf-8"
         )
         if result.returncode == 0:
             return result.stdout.strip()
@@ -158,7 +158,7 @@ def _get_current_pr_number() -> int | None:
 
         result = subprocess.run(
             "git rev-parse --abbrev-ref HEAD",
-            shell=True, capture_output=True, text=True, timeout=5
+            shell=True, capture_output=True, text=True, timeout=5, encoding="utf-8"
         )
         if result.returncode != 0:
             return None
